@@ -1,0 +1,11 @@
+{
+  "name": "My Codespace",
+  "image": "mcr.microsoft.com/devcontainers/python:latest",
+  "features": {
+    "gh-cli": "latest"
+  },
+  "extensions": [
+    "ms-python.python"
+  ]
+}
+
