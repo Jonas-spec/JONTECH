@@ -1,0 +1,226 @@
+import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
+
+void main() => runApp(const SafetyNetRwandaApp());
+
+class SafetyNetRwandaApp extends StatelessWidget {
+  const SafetyNetRwandaApp({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Safety Net Rwanda',
+      theme: ThemeData(primarySwatch: Colors.green),
+      home: const HomeScreen(),
+    );
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  const HomeScreen({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Safety Net Rwanda")),
+      body: ListView(
+        children: [
+          ListTile(
+            leading: const Icon(Icons.book),
+            title: const Text("📚 Cyber Lessons"),
+            onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const LessonsScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.quiz),
+            title: const Text("🎮 Quiz Game"),
+            onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const QuizScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.video_library),
+            title: const Text("🎥 Video Tutorials"),
+            onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const VideoScreen()),
+            ),
+          ),
+          ListTile(
+            leading: const Icon(Icons.business),
+            title: const Text("💼 Business Cyber Tips"),
+            onTap: () => Navigator.push(
+              context, MaterialPageRoute(builder: (context) => const BusinessTipsScreen()),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class LessonsScreen extends StatelessWidget {
+  const LessonsScreen({Key? key}) : super(key: key);
+
+  static const List<Map<String, String>> lessons = [
+    {
+      'title': 'Create Strong Passwords',
+      'content': 'Use a mix of upper/lowercase letters, numbers, and symbols.'
+    },
+    {
+      'title': 'Spot Phishing Emails',
+      'content': 'Look for suspicious links and sender addresses.'
+    },
+    {
+      'title': 'Safe Mobile Money Use',
+      'content': 'Never share your PIN. Always confirm transaction numbers.'
+    },
+    {
+      'title': 'Protect Personal Info',
+      'content': 'Don’t overshare on social media. Use privacy settings.'
+    },
+    {
+      'title': 'What To Do If Hacked',
+      'content': 'Change your passwords immediately and report to your service provider.'
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('Cyber Lessons')),
+      body: ListView.builder(
+        itemCount: lessons.length,
+        itemBuilder: (context, index) {
+          final lesson = lessons[index];
+          return Card(
+            margin: const EdgeInsets.all(10),
+            child: ListTile(
+              title: Text(lesson['title']!),
+              subtitle: Text(lesson['content']!),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class QuizScreen extends StatelessWidget {
+  const QuizScreen({Key? key}) : super(key: key);
+
+  static const List<Map<String, dynamic>> questions = [
+    {
+      'question': 'Which of these is a strong password?',
+      'options': ['123456', 'password', 'Pa\$sW0rd2024', 'john123'],
+      'answer': 'Pa\$sW0rd2024'
+    },
+    {
+      'question': 'Phishing emails often...',
+      'options': [
+        'Come from friends',
+        'Have spelling mistakes and fake links',
+        'Look boring',
+        'Ask nothing'
+      ],
+      'answer': 'Have spelling mistakes and fake links'
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Cyber Quiz")),
+      body: ListView.builder(
+        itemCount: questions.length,
+        itemBuilder: (context, index) {
+          final q = questions[index];
+          return Card(
+            margin: const EdgeInsets.all(10),
+            child: Column(
+              children: [
+                Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Text(q['question'], style: const TextStyle(fontSize: 18)),
+                ),
+                ...q['options'].map<Widget>((option) {
+                  return ListTile(
+                    title: Text(option),
+                    onTap: () {
+                      final correct = option == q['answer'];
+                      showDialog(
+                        context: context,
+                        builder: (_) => AlertDialog(
+                          content: Text(correct ? "✅ Correct!" : "❌ Wrong answer"),
+                        ),
+                      );
+                    },
+                  );
+                }).toList(),
+              ],
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
+class VideoScreen extends StatelessWidget {
+  const VideoScreen({Key? key}) : super(key: key);
+
+  static const List<Map<String, String>> videos = [
+    {
+      'title': 'Cybersecurity Basics (Kinyarwanda)',
+      'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    },
+    {
+      'title': 'How to Avoid Scams Online',
+      'url': 'https://www.youtube.com/watch?v=dQw4w9WgXcQ'
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Video Tutorials")),
+      body: ListView(
+        children: videos.map((video) {
+          return ListTile(
+            title: Text(video['title']!),
+            trailing: const Icon(Icons.play_circle),
+            onTap: () => launchUrl(Uri.parse(video['url']!)),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+class BusinessTipsScreen extends StatelessWidget {
+  const BusinessTipsScreen({Key? key}) : super(key: key);
+
+  static const List<String> tips = [
+    '✅ Use strong passwords and 2FA on business accounts.',
+    '✅ Train staff to identify suspicious emails.',
+    '✅ Backup data regularly and securely.',
+    '✅ Keep your software updated.',
+    '✅ Use antivirus and firewall protection.',
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text("Business Cyber Tips")),
+      body: ListView.builder(
+        itemCount: tips.length,
+        itemBuilder: (context, index) {
+          return Card(
+            margin: const EdgeInsets.all(10),
+            child: ListTile(title: Text(tips[index])),
+          );
+        },
+      ),
+    );
+  }
+}
